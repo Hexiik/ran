@@ -138,7 +138,7 @@ boot_logs = [
     "[DONE] Larp loaded."
 ]
 
-final1 = "THIS SYSTEM HAS BEEN SEIZED"
+final1 = "THIS SYSTEM HAS BEEN LARPED"
 final2 = "//HEXIIK//"
 final3 = "Enjoy the larp."
 
