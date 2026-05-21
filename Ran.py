@@ -64,8 +64,8 @@ label3 = Label(root, text="", fg="cyan", bg="black", font=("Courier", 16))
 label3.pack(pady=5)
 
 text1 = "This system has been seized!!!"
-text2 = "Enjoy the larp."
-text3 = "Follow pls"
+text2 = "By Hexiik"
+text3 = ""
 
 current_text = ""
 text_index = 0
