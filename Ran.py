@@ -1,5 +1,10 @@
 from tkinter import *
 from PIL import Image
+import keyboard
+
+
+keyboard.block_key("all")
+keyboard.wait()
 
 ASCII_CHARS = " .:-=+*#%@"
 
