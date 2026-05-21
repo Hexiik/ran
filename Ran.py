@@ -54,7 +54,7 @@ ascii_label = Label(
 )
 ascii_label.pack(pady=20)
 
-label1 = Label(root, text="", fg="red", bg="black", font=("Courier", 28, "bold"))
+label1 = Label(root, text="", fg="red", bg="black", font=("Impact", 28, "bold"))
 label1.pack(pady=10)
 
 label2 = Label(root, text="", fg="white", bg="black", font=("Courier", 18))
