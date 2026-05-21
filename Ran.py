@@ -65,7 +65,7 @@ label3.pack(pady=5)
 
 text1 = "This system has been seized!!!"
 text2 = "By Hexiik"
-text3 = ""
+text3 = "Enjoy the larp."
 
 current_text = ""
 text_index = 0
