@@ -171,6 +171,15 @@ boot_logs = [
     "[DONE] Larp loaded."
 ]
 
+loading_logs = [
+    "[INIT] Starting visual engine...",
+    "[INIT] Loading ASCII face...",
+    "[INIT] Starting Matrix rain...",
+    "[INIT] Connecting fake terminal...",
+    "[INIT] Syncing HEXIIK signature...",
+    "[OK] Loading complete."
+]
+
 final1 = "LARP DETECTED"
 final2 = "//HEXIIK//"
 final3 = "Enjoy the larp."
@@ -187,6 +196,21 @@ def add_log(text):
 
 def fake_hex():
     return "".join(random.choice("0123456789ABCDEF") for _ in range(32))
+
+def loading_sequence():
+    total_time = 3000
+    step_delay = total_time // len(loading_logs)
+
+    def run_step(i=0):
+        if i < len(loading_logs):
+            add_log(loading_logs[i])
+            status.config(text=loading_logs[i])
+            root.after(step_delay, lambda: run_step(i + 1))
+        else:
+            status.config(text="SYSTEM ONLINE")
+            root.after(300, animate_logs)
+
+    run_step()
 
 def animate_logs():
     global log_index
@@ -243,8 +267,9 @@ def random_log_spam():
     root.after(random.randint(900, 1600), random_log_spam)
 
 matrix_rain()
-animate_logs()
 flicker()
-random_log_spam()
+loading_sequence()
+
+root.after(5000, random_log_spam)
 
 root.mainloop()
