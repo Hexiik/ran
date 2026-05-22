@@ -1,10 +1,8 @@
 from tkinter import *
 from PIL import Image
 import random
-import time
 
 ASCII_CHARS = " .:-=+*#%@"
-
 IMAGE_PATH = "face.png"
 
 def resize_image(image, new_width=85):
@@ -43,11 +41,46 @@ root = Tk()
 root.title("")
 root.configure(bg="black")
 root.attributes("-fullscreen", True)
-
 root.bind("<Escape>", lambda e: root.destroy())
 
+screen_w = root.winfo_screenwidth()
+screen_h = root.winfo_screenheight()
+
+canvas = Canvas(root, bg="black", highlightthickness=0)
+canvas.place(x=0, y=0, relwidth=1, relheight=1)
+
+matrix_chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ#$%&@"
+font_size = 16
+columns = screen_w // font_size
+drops = [random.randint(-screen_h, 0) for _ in range(columns)]
+
+def matrix_rain():
+    canvas.delete("rain")
+
+    for i in range(columns):
+        x = i * font_size
+        y = drops[i]
+
+        char = random.choice(matrix_chars)
+
+        canvas.create_text(
+            x,
+            y,
+            text=char,
+            fill="#003f1f",
+            font=("Courier", font_size, "bold"),
+            tags="rain"
+        )
+
+        drops[i] += font_size
+
+        if drops[i] > screen_h and random.random() > 0.96:
+            drops[i] = random.randint(-300, 0)
+
+    root.after(45, matrix_rain)
+
 main = Frame(root, bg="black")
-main.pack(expand=True, fill=BOTH)
+main.place(relx=0.5, rely=0.5, anchor=CENTER)
 
 top_text = Label(
     main,
@@ -119,7 +152,7 @@ log_box.pack(pady=15)
 log_box.config(state=DISABLED)
 
 bottom = Label(
-    main,
+    root,
     text="[F0LL0W PLZ]",
     fg="#333333",
     bg="black",
@@ -209,6 +242,7 @@ def random_log_spam():
     add_log(random.choice(lines))
     root.after(random.randint(900, 1600), random_log_spam)
 
+matrix_rain()
 animate_logs()
 flicker()
 random_log_spam()
