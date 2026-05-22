@@ -60,7 +60,6 @@ def matrix_rain():
     for i in range(columns):
         x = i * font_size
         y = drops[i]
-
         char = random.choice(matrix_chars)
 
         canvas.create_text(
@@ -146,7 +145,9 @@ log_box = Text(
     height=10,
     width=90,
     borderwidth=0,
-    highlightthickness=0
+    highlightthickness=1,
+    highlightbackground="#00ff66",
+    highlightcolor="#00ff66"
 )
 log_box.pack(pady=15)
 log_box.config(state=DISABLED)
@@ -171,15 +172,6 @@ boot_logs = [
     "[DONE] Larp loaded."
 ]
 
-loading_logs = [
-    "[INIT] Starting visual engine...",
-    "[INIT] Loading ASCII face...",
-    "[INIT] Starting Matrix rain...",
-    "[INIT] Connecting fake terminal...",
-    "[INIT] Syncing HEXIIK signature...",
-    "[OK] Loading complete."
-]
-
 final1 = "LARP DETECTED"
 final2 = "//HEXIIK//"
 final3 = "Enjoy the larp."
@@ -187,6 +179,7 @@ final3 = "Enjoy the larp."
 current_warning = ""
 warning_index = 0
 log_index = 0
+loading_done = False
 
 def add_log(text):
     log_box.config(state=NORMAL)
@@ -194,23 +187,48 @@ def add_log(text):
     log_box.see(END)
     log_box.config(state=DISABLED)
 
+def clear_log():
+    log_box.config(state=NORMAL)
+    log_box.delete("1.0", END)
+    log_box.config(state=DISABLED)
+
 def fake_hex():
     return "".join(random.choice("0123456789ABCDEF") for _ in range(32))
 
-def loading_sequence():
-    total_time = 3000
-    step_delay = total_time // len(loading_logs)
+def terminal_loading_sequence():
+    loading_lines = [
+        "[BOOT] /usr/bin/init",
+        "[LOAD] kernel modules",
+        "[SCAN] memory blocks",
+        "[OK] terminal interface",
+        "[OK] matrix renderer",
+        "[AUTH] checking signature",
+        "[SYS] mounting /larp",
+        "[NET] localhost connected",
+        "[EXEC] opening fake shell",
+        "[DONE] terminal ready"
+    ]
 
-    def run_step(i=0):
-        if i < len(loading_logs):
-            add_log(loading_logs[i])
-            status.config(text=loading_logs[i])
-            root.after(step_delay, lambda: run_step(i + 1))
+    def spam(i=0):
+        if i == 0:
+            clear_log()
+            status.config(text="STARTING TERMINAL...")
+
+        if i < 38:
+            line = random.choice(loading_lines)
+
+            if random.randint(1, 2) == 1:
+                line += " :: " + fake_hex()
+
+            add_log(line)
+            status.config(text="LOADING TERMINAL" + "." * ((i % 3) + 1))
+            root.after(80, lambda: spam(i + 1))
         else:
-            status.config(text="SYSTEM ONLINE")
+            clear_log()
+            status.config(text="TERMINAL READY")
             root.after(300, animate_logs)
 
-    run_step()
+    spam()
 
 def animate_logs():
     global log_index
@@ -268,8 +286,8 @@ def random_log_spam():
 
 matrix_rain()
 flicker()
-loading_sequence()
+terminal_loading_sequence()
 
-root.after(5000, random_log_spam)
+root.after(6000, random_log_spam)
 
 root.mainloop()
